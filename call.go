@@ -1,4 +1,4 @@
-// Small pkg that helps you retry things that can be.
+// Package retry helps you retry things that can be.
 //
 //  Given a func Fn that might fail and return an error.
 //   if the error `IsRetryAble`, Fn will be rerun.
