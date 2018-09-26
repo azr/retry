@@ -21,7 +21,7 @@ func TestCall(t *testing.T) {
 			beenThere++
 			return ErrSomething
 		},
-		OnRetry:       nb.Backoff,
+		BeforeRetry:   nb.Backoff,
 		MaxRetry:      maxRetry,
 		IsRetryableFn: func(_ error) bool { return true },
 	}.Run()
@@ -42,8 +42,8 @@ func TestCallNoIsRetryableFn(t *testing.T) {
 			beenThere++
 			return ErrSomething
 		},
-		OnRetry:  nb.Backoff,
-		MaxRetry: maxRetry,
+		BeforeRetry: nb.Backoff,
+		MaxRetry:    maxRetry,
 	}.Run()
 	if err != ErrSomething {
 		t.Errorf("Wrong error returned, expected %v, got %v", ErrSomething, err)
@@ -62,7 +62,7 @@ func TestCallNoRetry(t *testing.T) {
 			beenThere++
 			return ErrSomething
 		},
-		OnRetry:       nb.Backoff,
+		BeforeRetry:   nb.Backoff,
 		MaxRetry:      maxRetry,
 		IsRetryableFn: func(_ error) bool { return false },
 	}.Run()
@@ -85,7 +85,7 @@ func ExampleCall() {
 			beenThere++
 			return ErrSomething
 		},
-		OnRetry: func() {
+		BeforeRetry: func() {
 			fmt.Println("Retrying...")
 			// sleep some time
 		},

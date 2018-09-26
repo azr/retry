@@ -53,7 +53,7 @@ package retry
 type Call struct {
 	Fn            func() error     // Called upon Run
 	IsRetryableFn func(error) bool // Called when Fn returns an error, with the error. Default behavior make this always true
-	OnRetry       func()           // Called if there was an error (retryable) and if defined
+	BeforeRetry   func()           // Called if there was an error (retryable) and if defined
 	MaxRetry      int              // Fn can be called up to `1 + MaxRetry` retryable times
 }
 
@@ -71,8 +71,8 @@ func (r Call) Run() error {
 
 func (r Call) rerun() error {
 	r.MaxRetry--
-	if r.OnRetry != nil {
-		r.OnRetry()
+	if r.BeforeRetry != nil {
+		r.BeforeRetry()
 	}
 	return r.Run()
 }
